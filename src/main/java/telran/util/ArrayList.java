@@ -60,6 +60,17 @@ public class ArrayList<T> implements List<T> {
         size++;
     }
 
+   
+    @Override
+    public T remove(int index) {
+        checkIndex(index, false);
+        T res = (T)array[index];
+        size--;
+        System.arraycopy(array, index + 1, array, index, size - index);
+        array[size] = null;
+        return res;
+    }
+
     @Override
     public T get(int index) {
         checkIndex(index, false);
@@ -85,27 +96,18 @@ public class ArrayList<T> implements List<T> {
     }
     @Override
     public boolean removeIf(Predicate<T> predicate) {
-        ArrayList<T> newList= new ArrayList<>();
-        for (int i = 0; i < this.size; i++) {
-            T item = this.get(i);
-            if(!predicate.test(item)) {
-                newList.add(item);
+       int indexTo = 0;
+       Predicate<T> negPred = predicate.negate(); //not to apply "!" operator at each iteration
+       for(int currentIndex = 0; currentIndex < size; currentIndex++) {
+        T current = (T)array[currentIndex];
+            if(negPred.test(current)) {
+                array[indexTo++] = current;
             }
-        }
-        boolean result = this.size != newList.size;
-        this.array = newList.array;
-        this.size = newList.size;
-        return result;
-    }
-
-    @Override
-    public T remove(int index) {
-        checkIndex(index, false);
-        T res = (T)array[index];
-        size--;
-        System.arraycopy(array, index + 1, array, index, size - index);
-        array[size] = null;
-        return res;
+       }
+       Arrays.fill(array,indexTo, size, null);
+       boolean res = indexTo < size;
+       size = indexTo;
+       return res;
     }
 
     private class ArrayListIterator implements Iterator<T> {
