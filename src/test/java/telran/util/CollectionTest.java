@@ -15,26 +15,30 @@ public abstract class CollectionTest {
     protected Collection<Integer> collection;
     Random random = new Random();
     Integer[] array = {3, -10, 20, 1, 10, 8, 100 , 17};
+
     void setUp() {
         Arrays.stream(array).forEach(collection::add);
     }
+    
     @Test
     void removeIfTest() {
         assertTrue(collection.removeIf(n -> n % 2 == 0));
         assertFalse(collection.removeIf(n -> n % 2 == 0));
         assertTrue(collection.stream().allMatch(n -> n % 2 != 0));
     }
+
     @Test
     void clearTest() {
         collection.clear();
         assertTrue(collection.isEmpty());
     }
+
     @Test
     void addNonExistingTest() {
         assertTrue(collection.add(200));
-       
         runTest(new Integer[]{3, -10, 20, 1, 10, 8, 100 , 17, 200});
     }
+
     @Test
     void addExistingTest() {
         assertTrue(collection.add(17));

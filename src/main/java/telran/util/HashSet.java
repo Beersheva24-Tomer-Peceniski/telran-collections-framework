@@ -2,6 +2,7 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 @SuppressWarnings("unchecked")
 public class HashSet<T> implements Set<T> {
@@ -10,22 +11,51 @@ public class HashSet<T> implements Set<T> {
     List<T>[] hashTable;
     float factor;
     int size;
+
     private class HashSetIterator implements Iterator<T> {
         //Hint:
         Iterator<T> currentIterator;
         Iterator<T> prevIterator;
-        int indexIterator;
+        int indexIterator = 0;
+        int insideIndexIterator = 0;
+        
         @Override
         public boolean hasNext() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'hasNext'");
+            boolean res = internalHasNext();
+            if (res == false) {
+                res = externalHasNext();
+            }
+            return res;
+        }
+
+        public boolean internalHasNext() {
+            Iterator<T> it = hashTable[indexIterator].iterator();
+            return it.hasNext() ? true : false;
+        }
+
+        public boolean externalHasNext() {
+            int i = indexIterator + 1;
+            while(hashTable[i] == null && i < hashTable.length) {
+                i++;
+            }
+            return i == hashTable.length? false : true;
         }
 
         @Override
         public T next() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'next'");
+            if(!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
         }
+
+        private T internalNext() {
+            Iterator<T> it = hashTable[indexIterator].iterator();
+            if (it.hasNext()) {
+                
+            }
+        }
+
         @Override
         public void remove() {
             // TODO Auto-generated method stub

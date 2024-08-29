@@ -16,10 +16,12 @@ public class LinkedList<T> implements List<T> {
     }
     private class LinkedListIterator implements Iterator<T> {
         Node<T> current = head;
-        Node<T> prev = null;
+        private boolean flNext = false;
+        
         @Override
         public boolean hasNext() {
-            return current != null;
+            flNext = true;
+            return current.next != null;
         }
 
         @Override
@@ -28,19 +30,19 @@ public class LinkedList<T> implements List<T> {
                 throw new NoSuchElementException();
             }
             T res = current.obj;
-            prev = current;
             current = current.next;
             return res;
         }
         @Override
         public void remove(){
-           if(prev == null) {
-            throw new IllegalStateException();
-           }
-           removeNode(prev);
-           prev = null;
-        }
-        
+            if(!flNext) {
+                throw new IllegalStateException();
+            }
+            flNext = false;
+            T objToRemove = current.obj;
+            current = current.prev;
+            LinkedList.this.remove(LinkedList.this.indexOf(objToRemove));
+        }   
     }
 
     Node<T> head;
