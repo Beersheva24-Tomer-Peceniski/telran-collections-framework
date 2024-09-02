@@ -2,6 +2,8 @@ package telran.util;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 @SuppressWarnings("unchecked")
 public class TreeSet<T> implements Set<T> {
     private static class Node<T> {
@@ -16,23 +18,77 @@ public class TreeSet<T> implements Set<T> {
     }
 
     private class TreeSetIterator implements Iterator<T> {
-        // TODO
+        Node<T> current = findMin(root);
+
+        private Node<T> findMin(Node <T> node) {
+            while(node.left != null) {
+                node = node.left;
+            }
+            return node;
+        }
+
         @Override
         public boolean hasNext() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'hasNext'");
+            return current != null;
         }
 
         @Override
         public T next() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'next'");
+        if (!hasNext()) {
+            throw new NoSuchElementException("No more elements in the tree");
+        }
+        Node <T> nextNode = current;
+        if(current.right != null) {
+            current = findMin(current.right);
+        } else {
+            Node <T> parent = current.parent;
+            while (parent != null && current == parent.right) {
+                current = parent;
+                parent = parent.parent;
+            }
+            current = parent;
+        }
+        return nextNode.obj;
         }
 
-        @Override
-        public void remove() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'next'");
+        public boolean remove(T obj) {
+            boolean res = false;
+            Node <T> node = getNode(obj); 
+            if(node.left == null || node.right == null) {
+                replaceNodeInParent(node, null);
+                size--;
+                res = true;
+            } else if (node.left == null) {
+                replaceNodeInParent(node, node.right);
+                size--;
+                res = true;
+            } else if (node.right == null) {
+                replaceNodeInParent(node, node.left);
+                size--;
+                res = true;
+            } else {
+                Node <T> nodeToReplace = findMin(node.right);
+                replaceNodeInParent(node, nodeToReplace);
+                size--;
+                res = true;
+            }
+            return res;
+        }
+
+        private void replaceNodeInParent(Node<T> nodeToRemove, Node<T> nodeToReplace) {
+            Node <T> parent = nodeToRemove.parent;
+            String res = comparator.compare(nodeToRemove.obj, nodeToRemove.parent.obj) > 0 ? "right" : "left";
+            if (parent == null) {
+                root = nodeToReplace;
+            } else if (res == "left") {
+                parent.left = nodeToReplace;
+            } else {
+                parent.right = nodeToReplace;
+            }
+            if (nodeToReplace != null) {
+                nodeToReplace.parent = nodeToRemove.parent;
+            }
+            nodeToRemove = null;
         }
     }
 
@@ -85,8 +141,7 @@ public class TreeSet<T> implements Set<T> {
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'size'");
+        return size;
     }
 
     @Override

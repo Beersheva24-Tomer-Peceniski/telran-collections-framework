@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class LinkedList<T> implements List<T> {
+    
     private static class Node<T> {
         T obj;
         Node<T> next;
@@ -14,6 +15,7 @@ public class LinkedList<T> implements List<T> {
             this.obj = obj;
         }
     }
+
     private class LinkedListIterator implements Iterator<T> {
         Node<T> current = head;
         private boolean flNext = false;
