@@ -4,6 +4,7 @@ public interface Map<K, V> {
     public static class Entry<K, V> implements Comparable<Entry<K,V>> {
         private final K key;
         private V value;
+        
         public Entry(K key, V value) {
             this.key = key;
             this.value = value;
@@ -33,19 +34,27 @@ public interface Map<K, V> {
             return key.equals(entry.key);
         }
     }
+
     V get(Object key);
-   default  V getOrDefault(Object key, V defaultValue) {
+    default  V getOrDefault(Object key, V defaultValue) {
         V res = get(key);
         if (res == null) {
             res = defaultValue;
         }
         return res;
     }
+    
     V put(K key, V value);
+
     default V putIfAbsent(K key, V value) {
-        //TODO
-        return null;
+        boolean contains = containsValue(value);
+        V res = null;
+        if(!contains) {
+            res = put(key, value);
+        }
+        return res;
     }
+    
     boolean containsKey(Object key);
     boolean containsValue(Object value);
     Set<K> keySet();
@@ -53,5 +62,4 @@ public interface Map<K, V> {
     Collection<V> values();
     int size();
     boolean isEmpty();
-
 }
