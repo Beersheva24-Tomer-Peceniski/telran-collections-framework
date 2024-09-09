@@ -11,9 +11,9 @@ abstract public class ListTest extends CollectionTest{
     @Override
     void setUp() {
         super.setUp();
-        list = (List<Integer>) collection;   
+        list = (List<Integer>) collection;
+        
     }
-
     @Test
    void removeIndexTest(){
        Integer[] expected = {-10, 20, 1,  8, 100 };

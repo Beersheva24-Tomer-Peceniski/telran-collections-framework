@@ -10,7 +10,11 @@ public class HashMapTest extends AbstractMapTest {
 
     @Override
     <T> void runTest(T[] expected, T[] actual) {
-       //TODO
+        T[] expectedSorted = Arrays.copyOf(expected, expected.length);
+        Arrays.sort(expectedSorted);
+        T[] actualSorted = Arrays.copyOf(actual, actual.length);
+        Arrays.sort(actualSorted);
+        assertArrayEquals(expectedSorted, actualSorted);
 
     }
     

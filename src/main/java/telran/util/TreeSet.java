@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 @SuppressWarnings("unchecked")
-public class TreeSet<T> implements Set<T> {
+public class TreeSet<T> implements SortedSet<T> {
     private static class Node<T> {
         T obj;
         Node<T> parent;
@@ -216,4 +216,34 @@ private Node<T> getNextCurrent(Node<T> current) {
 		node.parent = node.left = node.right = null;
 		
 	}
+
+    @Override
+    public T first() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'first'");
+    }
+
+    @Override
+    public T last() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'last'");
+    }
+
+    @Override
+    public T floor(T key) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'floor'");
+    }
+
+    @Override
+    public T ceiling(T key) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'ceiling'");
+    }
+
+    @Override
+    public SortedSet<T> subSet(T keyFrom, T keyTo) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'subSet'");
+    }
 }
