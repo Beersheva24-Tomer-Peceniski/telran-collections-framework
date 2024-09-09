@@ -17,7 +17,7 @@ public class SortedSetTest extends SetTest {
 
     @Test
     void floorTest() {
-        assertEquals(10, sortedSet.floor(10));
+        assertEquals(20, sortedSet.floor(20));
         assertNull(sortedSet.floor(-11));
         assertEquals(10, sortedSet.floor(11));
         assertEquals(100, sortedSet.floor(101));
