@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 //{3, -10, 20, 1, 10, 8, 100 , 17}
-public class SortedSetTest extends SetTest {
+public abstract class SortedSetTest extends SetTest {
     SortedSet<Integer> sortedSet;
 
     @Override
@@ -17,7 +17,7 @@ public class SortedSetTest extends SetTest {
 
     @Test
     void floorTest() {
-        assertEquals(20, sortedSet.floor(20));
+        assertEquals(10, sortedSet.floor(10));
         assertNull(sortedSet.floor(-11));
         assertEquals(10, sortedSet.floor(11));
         assertEquals(100, sortedSet.floor(101));
@@ -44,8 +44,20 @@ public class SortedSetTest extends SetTest {
     @Test
     void subSetTest() {
         Integer[] expected = { 10, 17 };
-        Integer[] actual = sortedSet.subSet(10, 20).stream().toArray(Integer[]::new);
+        Integer[] actual = getActualSubSet(10, 20);
         assertArrayEquals(expected, actual);
+        actual = getActualSubSet(9, 18);
+        assertArrayEquals(expected, actual);
+        actual = getActualSubSet(100, 100);
+        assertEquals(0, actual.length);
+        assertThrowsExactly(IllegalArgumentException.class,
+         ()->sortedSet.subSet(10, 5));
+       
+
+    }
+
+    private Integer[] getActualSubSet(int keyFrom, int keyTo) {
+        return sortedSet.subSet(keyFrom, keyTo).stream().toArray(Integer[]::new);
     }
 
 }
