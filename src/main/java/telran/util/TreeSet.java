@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import telran.util.LinkedList.Node;
+
 @SuppressWarnings("unchecked")
 public class TreeSet<T> implements SortedSet<T> {
     private static class Node<T> {
@@ -311,14 +313,6 @@ public class TreeSet<T> implements SortedSet<T> {
         return res;
     }
 
-    public void displayTreeRotated() {
-        displayTreeRotated(root, 0);
-    }
-
-    public void displayTreeParentChildren() {
-        // TODO
-    }
-
     public int width() {
         return width(root);
     }
@@ -346,9 +340,17 @@ public class TreeSet<T> implements SortedSet<T> {
     }
 
     public void inversion() {
-        // TODO
-        // reversing nodes placement with the same root and with the same nodes
-        // only left , right references should be swapped
+        inversion(root);
+    }
+
+    public void inversion(Node<T> root) {
+        if (root != null) {
+            Node<T> temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+            inversion(root.left);
+            inversion(root.right);
+        }
     }
 
     private void displayTreeRotated(Node<T> root, int level) {
@@ -361,5 +363,21 @@ public class TreeSet<T> implements SortedSet<T> {
 
     private void displayRootObject(T obj, int level) {
         System.out.printf("%s%s\n", printingSymbol.repeat(level * symbolsPerLevel), obj);
+    }
+
+    public void displayTreeRotated() {
+        displayTreeRotated(root, 0);
+    }
+
+    public void displayTreeParentChildren() {
+        displayTreeParentChildren(root, 0);
+    }
+
+    private void displayTreeParentChildren(Node<T> root, int level) {
+        if(root != null) {
+            displayRootObject(root.obj, level);
+            displayTreeParentChildren(root.left, level + 1);
+            displayTreeParentChildren(root.right, level + 1);
+        }
     }
 }
