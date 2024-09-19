@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 //{3, -10, 20, 1, 10, 8, 100 , 17};
 public class TreeSetTest extends SortedSetTest{

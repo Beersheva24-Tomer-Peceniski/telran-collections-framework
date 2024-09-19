@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
@@ -77,22 +76,21 @@ public abstract class SortedSetTest extends SetTest {
        return new Random().ints().distinct().limit(N_ELEMENTS).boxed().toArray(Integer[]::new);
 
     }
+
     protected Integer[] getBigArrayHW() {
-        Integer[] randomArray = getBigArrayCW();
-        Arrays.sort(randomArray);
-        Integer[] balancedArray = new Integer[randomArray.length];
-         fillBalancedArray(randomArray, balancedArray, 0, randomArray.length - 1, new int[]{0});
-         return balancedArray;
- 
-     }
-    private void fillBalancedArray(Integer[] sortedArray, Integer[] balancedArray, int left, int right,
-     int[] currentIndexRef) {
-       if(left <= right) {
-            int rootIndex = (left + right) / 2;
-            balancedArray[currentIndexRef[0]++] = sortedArray[rootIndex];
-            fillBalancedArray(sortedArray, balancedArray, left, rootIndex - 1, currentIndexRef);
-            fillBalancedArray(sortedArray, balancedArray, rootIndex + 1, right, currentIndexRef);
-       }
+        Integer[] sortedArray = Arrays.stream(getBigArrayCW()).sorted().toArray(Integer[]::new);
+        java.util.ArrayList<Integer> list = new java.util.ArrayList<>();
+        addBalance(list, 0, sortedArray.length - 1, sortedArray);
+        return list.toArray(new Integer[0]);
+    }
+
+    private void addBalance(java.util.ArrayList<Integer> list, Integer left, Integer right, Integer[] sortedArray) {
+        if(left <= right) {
+            Integer middle = (left + right) / 2;
+            list.add(sortedArray[middle]);
+            addBalance(list, left, middle - 1, sortedArray);
+            addBalance(list, middle + 1, right, sortedArray);        
+        }
     }
 
     @Override
